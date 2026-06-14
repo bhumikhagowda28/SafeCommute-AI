@@ -35,12 +35,40 @@ margin-top:10px;
 </head>
 
 <body>
-
 <div class="container">
 
-<h1>SafeCommute AI</h1>
+<h1>SafeCommute AI 🚍</h1>
 
-<p>Smart Journey Planner for Safer Urban Travel</p>
+<h3>Safer, Smarter and Secure Travel for Women</h3>
+
+<p>
+SafeCommute AI helps women identify safer routes,
+access emergency support and make informed commuting decisions.
+</p>
+
+<h2>Key Features</h2>
+
+<ul>
+<li>Safe Route Recommendation</li>
+<li>Route Safety Score</li>
+<li>Emergency SOS Support</li>
+<li>Live Location Sharing</li>
+<li>Smart Journey Planning</li>
+</ul>
+
+<h2>Available Routes</h2>
+
+<p>Route A - Safety Score: 92/100 ⭐ Recommended</p>
+<p>Route B - Safety Score: 81/100</p>
+<p>Route C - Safety Score: 73/100</p>
+
+<h2>AI Safety Analysis</h2>
+
+<p>
+Based on route safety, lighting conditions,
+public transport availability and crowd density,
+Route A is recommended as the safest option.
+</p>
 
 <input type="text" placeholder="Enter Destination">
 
@@ -54,6 +82,10 @@ margin-top:10px;
 
 <p id="sos"></p>
 
+<button onclick="shareLocation()">Share Live Location</button>
+
+<p id="location"></p>
+
 </div>
 
 <script>
@@ -66,6 +98,11 @@ document.getElementById("result").innerHTML=
 function showSOS(){
 document.getElementById("sos").innerHTML=
 "Emergency Alert Sent!";
+}
+
+function shareLocation(){
+document.getElementById("location").innerHTML=
+"Live location shared with trusted contacts.";
 }
 
 </script>
