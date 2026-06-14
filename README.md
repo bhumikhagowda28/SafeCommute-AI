@@ -2,48 +2,69 @@ SafeCommute AI
 
 Overview
 
-SafeCommute AI helps women find safer commuting routes with safety scores and emergency support.
+SafeCommute AI is a smart mobility solution designed to help women travel safely by identifying secure routes, providing safety scores, and offering emergency assistance features.
 
-Problem
+Problem Statement
 
-Many navigation apps prioritize speed over personal safety, especially in unfamiliar or late-night travel.
+Many navigation applications prioritize the fastest route but often ignore personal safety concerns, especially during late-night travel or in unfamiliar locations.
 
 Solution
 
-The platform analyzes routes, recommends safer options, and provides SOS assistance.
+SafeCommute AI recommends safer travel routes using safety-based scoring and provides emergency support tools to help users make informed commuting decisions.
 
 Key Features
 
 - Safe Route Recommendations
-- Safety Scores
-- SOS Support
-- Journey Planning
+- Route Safety Scoring
+- Emergency SOS Support
+- Live Location Sharing
+- Smart Journey Planning
+
+AI Features
+
+- Route Risk Assessment
+- Safety Score Prediction
+- Smart Route Recommendation
+- Women-Centric Travel Intelligence
+- Emergency Response Assistance
 
 How It Works
 
-1. Enter destination.
-2. Routes are analyzed.
-3. Safety score is generated.
-4. Safest route is suggested.
+1. Enter the destination.
+2. Available routes are analyzed.
+3. Safety scores are generated.
+4. The safest route is recommended.
+5. Emergency features can be accessed when needed.
 
-Technology
+Technology Stack
 
 - HTML
 - CSS
 - JavaScript
+- GitHub Pages
 
-Future Enhancements
+Future Scope
 
-- AI route analysis
-- Live location sharing
-- Emergency contact integration
+- Real-time crime data integration
+- AI-powered risk prediction
+- GPS-based live tracking
+- Emergency contact notifications
+- Voice-enabled SOS assistant
 
 Team
 
 Individual Participant
 
-Hackathon
+Hackathon Details
 
-Reimagining Urban Mobility & Daily Commute in India 2026
+Hackathon: Reimagining Urban Mobility & Daily Commute in India 2026
 
 Track: Women Safety & Secure Commute
+
+Live Demo
+
+https://bhumikhagowda28.github.io/SafeCommute-AI/
+
+GitHub Repository
+
+https://github.com/bhumikhagowda28/SafeCommute-AI
