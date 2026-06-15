@@ -1,111 +1,540 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-<title>SafeCommute AI</title>
-<style>
-body{
-font-family:Arial;
-background:#f4f4f4;
-padding:20px;
-text-align:center;
-}
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>SafeCommute AI</title>
+  <style>
+    /* ---- reset & base ---- */
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
 
-.container{
-background:white;
-padding:20px;
-border-radius:10px;
-box-shadow:0 0 10px rgba(0,0,0,0.2);
-}
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: #eef2f7;
+      color: #1a1a2e;
+      min-height: 100vh;
+    }
 
-button{
-background:#4CAF50;
-color:white;
-padding:10px 20px;
-border:none;
-border-radius:5px;
-margin-top:10px;
-}
+    /* ---- header ---- */
+    .header {
+      background: linear-gradient(135deg, #1a3a6b, #2d6fcf);
+      color: white;
+      padding: 24px 20px 20px;
+      text-align: center;
+    }
 
-input{
-padding:10px;
-width:80%;
-margin-top:10px;
-}
-</style>
+    .header h1 {
+      font-size: 26px;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+    }
+
+    .header p {
+      font-size: 13px;
+      opacity: 0.85;
+      margin-top: 5px;
+    }
+
+    /* ---- main layout ---- */
+    .main {
+      max-width: 480px;
+      margin: 20px auto;
+      padding: 0 16px 40px;
+    }
+
+    /* ---- card ---- */
+    .card {
+      background: white;
+      border-radius: 14px;
+      padding: 20px;
+      margin-bottom: 16px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.07);
+    }
+
+    .card h2 {
+      font-size: 15px;
+      font-weight: 600;
+      color: #1a3a6b;
+      margin-bottom: 14px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    /* ---- search bar ---- */
+    .search-row {
+      display: flex;
+      gap: 8px;
+    }
+
+    .search-row input {
+      flex: 1;
+      padding: 11px 14px;
+      border: 1.5px solid #d0d8e8;
+      border-radius: 10px;
+      font-size: 14px;
+      outline: none;
+      transition: border 0.2s;
+    }
+
+    .search-row input:focus {
+      border-color: #2d6fcf;
+    }
+
+    .btn-primary {
+      background: #2d6fcf;
+      color: white;
+      border: none;
+      border-radius: 10px;
+      padding: 11px 16px;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.2s;
+      white-space: nowrap;
+    }
+
+    .btn-primary:hover {
+      background: #1a5ab5;
+    }
+
+    /* ---- status tag ---- */
+    .status-tag {
+      display: inline-block;
+      font-size: 11px;
+      font-weight: 600;
+      padding: 3px 9px;
+      border-radius: 20px;
+      margin-left: 8px;
+    }
+
+    .tag-green  { background: #e6f4ea; color: #2e7d32; }
+    .tag-yellow { background: #fff8e1; color: #f57f17; }
+    .tag-red    { background: #fce4ec; color: #c62828; }
+
+    /* ---- route card ---- */
+    .route-item {
+      border: 1.5px solid #e8edf5;
+      border-radius: 12px;
+      padding: 14px;
+      margin-bottom: 10px;
+      cursor: pointer;
+      transition: all 0.2s;
+      position: relative;
+    }
+
+    .route-item:hover {
+      border-color: #2d6fcf;
+      background: #f5f8ff;
+    }
+
+    .route-item.selected {
+      border-color: #2d6fcf;
+      background: #f0f5ff;
+    }
+
+    .route-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 8px;
+    }
+
+    .route-name {
+      font-size: 14px;
+      font-weight: 600;
+    }
+
+    .score-badge {
+      font-size: 13px;
+      font-weight: 700;
+      color: white;
+      padding: 3px 10px;
+      border-radius: 20px;
+    }
+
+    .score-high   { background: #2e7d32; }
+    .score-medium { background: #f57f17; }
+    .score-low    { background: #c62828; }
+
+    /* ---- progress bar ---- */
+    .progress-wrap {
+      background: #e8edf5;
+      border-radius: 99px;
+      height: 6px;
+      margin-top: 8px;
+      overflow: hidden;
+    }
+
+    .progress-fill {
+      height: 6px;
+      border-radius: 99px;
+      transition: width 0.8s ease;
+    }
+
+    .fill-high   { background: #2e7d32; }
+    .fill-medium { background: #f57f17; }
+    .fill-low    { background: #c62828; }
+
+    .route-meta {
+      display: flex;
+      gap: 14px;
+      margin-top: 8px;
+      font-size: 12px;
+      color: #666;
+    }
+
+    /* ---- AI analysis box ---- */
+    .ai-box {
+      background: #f0f5ff;
+      border-left: 4px solid #2d6fcf;
+      border-radius: 8px;
+      padding: 12px 14px;
+      font-size: 13px;
+      line-height: 1.6;
+      color: #1a2a4a;
+      display: none;
+    }
+
+    .ai-box.visible {
+      display: block;
+    }
+
+    /* ---- feature icons row ---- */
+    .features-row {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+    }
+
+    .feat-box {
+      background: #f5f8ff;
+      border-radius: 12px;
+      padding: 14px 10px;
+      text-align: center;
+    }
+
+    .feat-box .icon {
+      font-size: 22px;
+      margin-bottom: 6px;
+    }
+
+    .feat-box p {
+      font-size: 11px;
+      color: #444;
+      font-weight: 500;
+    }
+
+    /* ---- SOS button ---- */
+    .sos-btn {
+      width: 100%;
+      background: #c62828;
+      color: white;
+      border: none;
+      border-radius: 12px;
+      padding: 15px;
+      font-size: 16px;
+      font-weight: 700;
+      cursor: pointer;
+      letter-spacing: 1px;
+      transition: background 0.2s, transform 0.1s;
+    }
+
+    .sos-btn:hover   { background: #a81f1f; }
+    .sos-btn:active  { transform: scale(0.98); }
+
+    .sos-status {
+      margin-top: 12px;
+      font-size: 13px;
+      text-align: center;
+      color: #c62828;
+      font-weight: 600;
+      display: none;
+    }
+
+    /* ---- share location ---- */
+    .share-btn {
+      width: 100%;
+      background: white;
+      color: #2d6fcf;
+      border: 2px solid #2d6fcf;
+      border-radius: 12px;
+      padding: 13px;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .share-btn:hover {
+      background: #f0f5ff;
+    }
+
+    .share-status {
+      margin-top: 10px;
+      font-size: 13px;
+      color: #2d6fcf;
+      text-align: center;
+      display: none;
+    }
+
+    /* ---- loading spinner ---- */
+    .analyzing {
+      text-align: center;
+      padding: 10px 0;
+      font-size: 13px;
+      color: #2d6fcf;
+      display: none;
+    }
+
+    .dot-flash span {
+      display: inline-block;
+      width: 7px;
+      height: 7px;
+      margin: 0 2px;
+      background: #2d6fcf;
+      border-radius: 50%;
+      animation: bounce 1.2s infinite;
+    }
+
+    .dot-flash span:nth-child(2) { animation-delay: 0.2s; }
+    .dot-flash span:nth-child(3) { animation-delay: 0.4s; }
+
+    @keyframes bounce {
+      0%, 80%, 100% { transform: scale(0.6); opacity: 0.5; }
+      40%           { transform: scale(1);   opacity: 1;   }
+    }
+
+    /* ---- sos countdown ---- */
+    .sos-countdown {
+      font-size: 28px;
+      font-weight: 800;
+      color: #c62828;
+      text-align: center;
+      display: none;
+      margin-top: 8px;
+    }
+  </style>
 </head>
 
 <body>
-<div class="container">
 
-<h1>SafeCommute AI 🚍</h1>
+  <div class="header">
+    <h1>🛡️ SafeCommute AI</h1>
+    <p>Smart Mobility for Safer, Smarter and Secure Travel</p>
+  </div>
 
-<h3>Safer, Smarter and Secure Travel for Women</h3>
+  <div class="main">
 
-<p>
-SafeCommute AI helps women identify safer routes,
-access emergency support and make informed commuting decisions.
-</p>
+    <!-- destination search -->
+    <div class="card">
+      <h2>📍 Where are you going?</h2>
+      <div class="search-row">
+        <input type="text" id="destination" placeholder="Enter your destination..." />
+        <button class="btn-primary" onclick="analyzeRoutes()">Analyze</button>
+      </div>
 
-<h2>Key Features</h2>
+      <div class="analyzing" id="analyzing">
+        <div class="dot-flash">
+          <span></span><span></span><span></span>
+        </div>
+        <p style="margin-top:6px">AI is analyzing route safety...</p>
+      </div>
+    </div>
 
-<ul>
-<li>Safe Route Recommendation</li>
-<li>Route Safety Score</li>
-<li>Emergency SOS Support</li>
-<li>Live Location Sharing</li>
-<li>Smart Journey Planning</li>
-</ul>
+    <!-- routes -->
+    <div class="card" id="routeCard" style="display:none">
+      <h2>🗺️ Available Routes</h2>
 
-<h2>Available Routes</h2>
+      <div class="route-item selected" onclick="selectRoute(this, 'A')">
+        <div class="route-header">
+          <span class="route-name">Route A — Main Road</span>
+          <span class="score-badge score-high">92/100</span>
+        </div>
+        <div class="progress-wrap">
+          <div class="progress-fill fill-high" style="width:92%"></div>
+        </div>
+        <div class="route-meta">
+          <span>🕐 28 min</span>
+          <span>💡 Well lit</span>
+          <span>👥 High crowd</span>
+          <span class="status-tag tag-green">Recommended</span>
+        </div>
+      </div>
 
-<p>Route A - Safety Score: 92/100 ⭐ Recommended</p>
-<p>Route B - Safety Score: 81/100</p>
-<p>Route C - Safety Score: 73/100</p>
+      <div class="route-item" onclick="selectRoute(this, 'B')">
+        <div class="route-header">
+          <span class="route-name">Route B — City Bypass</span>
+          <span class="score-badge score-medium">78/100</span>
+        </div>
+        <div class="progress-wrap">
+          <div class="progress-fill fill-medium" style="width:78%"></div>
+        </div>
+        <div class="route-meta">
+          <span>🕐 22 min</span>
+          <span>💡 Moderate</span>
+          <span>👥 Medium crowd</span>
+          <span class="status-tag tag-yellow">Moderate</span>
+        </div>
+      </div>
 
-<h2>AI Safety Analysis</h2>
+      <div class="route-item" onclick="selectRoute(this, 'C')">
+        <div class="route-header">
+          <span class="route-name">Route C — Shortcut Lane</span>
+          <span class="score-badge score-low">61/100</span>
+        </div>
+        <div class="progress-wrap">
+          <div class="progress-fill fill-low" style="width:61%"></div>
+        </div>
+        <div class="route-meta">
+          <span>🕐 17 min</span>
+          <span>💡 Poorly lit</span>
+          <span>👥 Low crowd</span>
+          <span class="status-tag tag-red">Avoid</span>
+        </div>
+      </div>
 
-<p>
-Based on route safety, lighting conditions,
-public transport availability and crowd density,
-Route A is recommended as the safest option.
-</p>
+      <div class="ai-box visible" id="aiBox">
+        🤖 <strong>AI Recommendation:</strong> Route A scores highest for safety based on street lighting, crowd density, and CCTV coverage. Although it takes a few extra minutes, it is the safest option for travel — especially after dark.
+      </div>
+    </div>
 
-<input type="text" placeholder="Enter Destination">
+    <!-- key features -->
+    <div class="card">
+      <h2>✨ Key Features</h2>
+      <div class="features-row">
+        <div class="feat-box">
+          <div class="icon">🛡️</div>
+          <p>Safe Route Score</p>
+        </div>
+        <div class="feat-box">
+          <div class="icon">📡</div>
+          <p>Live Tracking</p>
+        </div>
+        <div class="feat-box">
+          <div class="icon">🚨</div>
+          <p>SOS Alert</p>
+        </div>
+        <div class="feat-box">
+          <div class="icon">💡</div>
+          <p>Lighting Info</p>
+        </div>
+        <div class="feat-box">
+          <div class="icon">👥</div>
+          <p>Crowd Density</p>
+        </div>
+        <div class="feat-box">
+          <div class="icon">🚌</div>
+          <p>Transit Info</p>
+        </div>
+      </div>
+    </div>
 
-<br>
+    <!-- SOS -->
+    <div class="card">
+      <h2>🚨 Emergency SOS</h2>
+      <button class="sos-btn" id="sosBtn" onclick="triggerSOS()">🆘 SEND SOS ALERT</button>
+      <div class="sos-countdown" id="sosCountdown"></div>
+      <div class="sos-status" id="sosStatus"></div>
+    </div>
 
-<button onclick="showRoute()">Find Safe Route</button>
+    <!-- live location -->
+    <div class="card">
+      <h2>📡 Live Location Sharing</h2>
+      <button class="share-btn" onclick="shareLocation()">📤 Share My Location</button>
+      <div class="share-status" id="shareStatus"></div>
+    </div>
 
-<h3 id="result"></h3>
+  </div>
 
-<button onclick="showSOS()">SOS Emergency</button>
+  <script>
+    // shows loading animation then reveals route cards
+    function analyzeRoutes() {
+      var dest = document.getElementById("destination").value.trim();
 
-<p id="sos"></p>
+      if (!dest) {
+        alert("Please enter a destination first.");
+        return;
+      }
 
-<button onclick="shareLocation()">Share Live Location</button>
+      var analyzing = document.getElementById("analyzing");
+      var routeCard = document.getElementById("routeCard");
 
-<p id="location"></p>
+      // hide results while re-analyzing
+      routeCard.style.display = "none";
+      analyzing.style.display = "block";
 
-</div>
+      setTimeout(function () {
+        analyzing.style.display = "none";
+        routeCard.style.display = "block";
+        document.getElementById("aiBox").innerHTML =
+          "🤖 <strong>AI Recommendation for " + dest + ":</strong> Route A scores highest for safety based on street lighting, crowd density, and CCTV coverage. Although it takes a few extra minutes, it is the safest option for travel — especially after dark.";
+      }, 2000);
+    }
 
-<script>
+    // highlights selected route
+    function selectRoute(el, name) {
+      var items = document.querySelectorAll(".route-item");
+      items.forEach(function (item) {
+        item.classList.remove("selected");
+      });
+      el.classList.add("selected");
+    }
 
-function showRoute(){
-document.getElementById("result").innerHTML=
-"Recommended Route Safety Score: 92/100";
-}
+    // SOS with countdown
+    var sosActive = false;
 
-function showSOS(){
-document.getElementById("sos").innerHTML=
-"Emergency Alert Sent!";
-}
+    function triggerSOS() {
+      if (sosActive) return;
+      sosActive = true;
 
-function shareLocation(){
-document.getElementById("location").innerHTML=
-"Live location shared with trusted contacts.";
-}
+      var btn = document.getElementById("sosBtn");
+      var countdown = document.getElementById("sosCountdown");
+      var status = document.getElementById("sosStatus");
 
-</script>
+      btn.disabled = true;
+      btn.style.opacity = "0.6";
+      countdown.style.display = "block";
+      status.style.display = "none";
+
+      var count = 3;
+      countdown.textContent = "Sending in " + count + "...";
+
+      var timer = setInterval(function () {
+        count--;
+        if (count > 0) {
+          countdown.textContent = "Sending in " + count + "...";
+        } else {
+          clearInterval(timer);
+          countdown.style.display = "none";
+          status.style.display = "block";
+          status.innerHTML = "✅ Emergency alert sent! Your location has been shared with trusted contacts and nearby authorities.";
+
+          // reset button after 5 seconds
+          setTimeout(function () {
+            btn.disabled = false;
+            btn.style.opacity = "1";
+            sosActive = false;
+          }, 5000);
+        }
+      }, 1000);
+    }
+
+    // share location
+    function shareLocation() {
+      var status = document.getElementById("shareStatus");
+      status.style.display = "block";
+      status.textContent = "Fetching your location...";
+
+      setTimeout(function () {
+        status.innerHTML = "✅ Live location shared with 3 trusted contacts. They can track you in real time.";
+      }, 1500);
+    }
+  </script>
 
 </body>
 </html>
